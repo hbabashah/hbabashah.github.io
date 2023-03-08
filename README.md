@@ -6,11 +6,11 @@ NI cards provide hardware support for data acquisition tasks such as capturing a
 
 The following tutorials are available for NI Cards using PyDAQ-mx:
 
-Analogue Acquisition with PyDAQ-mx for NI Cards
-Digital Acquisition with PyDAQ-mx for NI Cards
-Trigger Acquisition with PyDAQ-mx for NI Cards
-Photon Counting with PyDAQ-mx for NI Cards
-Pulse generation with PyDAQ-mx for NI Cards
+- Analogue Acquisition with PyDAQ-mx for NI Cards
+- Digital Acquisition with PyDAQ-mx for NI Cards
+- Trigger Acquisition with PyDAQ-mx for NI Cards
+- Photon Counting with PyDAQ-mx for NI Cards
+- Pulse generation with PyDAQ-mx for NI Cards
 ## Telegram Integration
 Telegram is a messaging app that can be used to send messages, photos, videos, and files to other users. The Python Telegram Bot API provides a way to interact with Telegram bots using Python. This can be used to send plots and other data to your phone or other devices after a measurement is complete.
 
