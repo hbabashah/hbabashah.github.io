@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Sending Plots with Telegram Bot API</title>
+</head>
+<body>
+	<h1>Sending Plots with Telegram Bot API</h1>
+	<p>This tutorial explains how to create a Telegram bot in Python and use it to send plots of data to your phone or other devices.</p>
+	
+	<h2>Getting Started</h2>
+	<p>In order to get started with sending plots using Telegram bot API, you will need:</p>
+	<ul>
+		<li>A Telegram account</li>
+		<li>A compatible version of Python installed on your computer</li>
+	</ul>
+	
+	<h2>Creating a Telegram Bot</h2>
+	<p>First, you will need to create a new bot on Telegram:</p>
+	<ol>
+		<li>Open Telegram and search for <strong>BotFather</strong>.</li>
+		<li>Send a message to BotFather, and use the <code>/newbot</code> command to create a new bot.</li>
+		<li>Follow the instructions to give your bot a name and username.</li>
+		<li>Once your bot is created, you will receive a token that you can use to access the Telegram Bot API.</li>
+	</ol>
+	
+	<h2>Installing Required Libraries</h2>
+	<p>You will need to install the following libraries to send plots using Telegram bot API:</p>
+	<ul>
+		<li><a href="https://matplotlib.org/">Matplotlib</a></li>
+		<li><a href="https://python-telegram-bot.org/">Python Telegram Bot</a></li>
+	</ul>
+	
+	<h2>Sending a Plot with Telegram Bot API</h2>
+	<p>Here's an example script for sending a plot of data to your phone using Telegram bot API:</p>
+	<pre>
+	import telegram
+	import matplotlib.pyplot as plt
+	
+	# Create a bot instance
+	bot = telegram.Bot(token='YOUR_TOKEN_HERE')
+	
+	# Generate a plot
+	x = [1, 2, 3, 4, 5]
+	y = [1, 4, 9, 16, 25]
+	plt.plot(x, y)
+	plt.title('My Plot')
+	plt.xlabel('X Axis')
+	plt.ylabel('Y Axis')
+	
+	# Save the plot to a file
+	plt.savefig('myplot.png')
+	
+	# Send the plot to your phone
+	bot.send_photo(chat_id='YOUR_CHAT_ID_HERE', photo=open('myplot.png', 'rb'))
+	</pre>
+	<p>This script generates a simple plot, saves it to a file, and sends it to your phone using Telegram bot API.</p>
+	
+	<h2>Conclusion</h2>
+	<p>The Python Telegram Bot API makes it easy to create bots and send messages and files, including plots of data. With this tutorial, you should now be able to create a Telegram bot in Python and use it to send plots to your phone or other devices.</p>
+</body>
+</html>
