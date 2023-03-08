@@ -21,28 +21,146 @@
 	<h2>Performing Photon Counting with NI Card</h2>
 	<p>Performing photon counting using an NI card involves creating a task, configuring the channels and timing, starting the task, and reading the acquired data. Here's an example script:</p>
 	<pre>
-	import PyDAQmx
+	import numpy as np
+	import os
+	import time
+	import PyDAQmx as daq
+
+	def acquire_signal(channel_name, file_path, save_data=True, acquisition_time=1, laser_length=200e-6, resolution=0.5e-6):
+	    """
+	    Acquires a signal from a DAQ device and saves the data to a file.
+
+	    Parameters:
+	    channel_name (str): The name of the DAQ channel to acquire data from.
+	    file_path (str): The path to the file where the data should be saved.
+	    save_data (bool): Whether to save the acquired data to a file. Defaults to True.
+	    acquisition_time (float): The duration of the acquisition in seconds. Defaults to 1.
+	    laser_length (float): The length of the laser pulse in seconds. Defaults to 200e-6.
+	    resolution (float): The resolution of the acquisition in seconds. Defaults to 0.5e-6.
+
+	    Returns:
+	    A tuple containing the acquired data and the time scale of the data.
+	    """
+
+	    # Convert laser_length and resolution to number of samples
+	    laser_samples = int(laser_length / resolution)
+	    resolution_samples = int(resolution * 1e9) # convert to nanoseconds
+
+	    # Initialize variables
+	    start_time = time.time()
+	    print(f"Acquiring signal from {channel_name}...\n")
+	    data = {}
+	    flag = False
+	    flag2 = True
+	    split = 2
+	    while not flag:
+		# Split the acquisition time into smaller chunks
+		if acquisition_time > split:
+		    acquisition_time_sub = split
+		    acquisition_time -= split
+		else:
+		    acquisition_time_sub = acquisition_time
+		    flag = True
+
+		# Initialize DAQ tasks
+		counter1 = daq.Task()
+		counter2 = daq.Task()
+		clock = daq.Task()
+
+		# Configure clock task to generate a pulse train
+		clock_channel = '/Dev1/Ctr2'
+		clock.CreateCOPulseChanFreq(clock_channel, "myClockTask", daq.DAQmx_Val_Hz, daq.DAQmx_Val_Low, 0,
+			    1 / float(resolution), 0.5)
+		        # Set the clock task to start and stop with a digital pause trigger
+	    clock.SetPauseTrigType(daq.DAQmx_Val_DigLvl)
+	    clock.SetDigLvlPauseTrigSrc("PFI2")
+	    clock.SetDigLvlPauseTrigWhen(daq.DAQmx_Val_Low)
+
+	    # Configure counter tasks to measure laser and sync signals
+	    laser_channel = '/Dev1/Ctr0'
+	    sync_channel = '/Dev1/Ctr1'
+	    counter1.CreateCISemiPeriodChan(laser_channel, 'Laser', 0, 2, daq.DAQmx_Val_Ticks, '')
+	    counter2.CreateCISemiPeriodChan(sync_channel, 'Sync', 0, 2, daq.DAQmx_Val_Ticks, '')
+
+	    # Set the counter tasks to start and stop with a digital edge trigger
+	    counter1.SetArmStartTrigType(daq.DAQmx_Val_DigEdge)
+	    counter1.SetDigEdgeArmStartTrigSrc("PFI2")
+	    counter1.SetDigEdgeArmStartTrigEdge(daq.DAQmx_Val_Rising)
+	    counter2.SetArmStartTrigType(daq.DAQmx_Val_DigEdge)
+	    counter2.SetDigEdgeArmStartTrigSrc("PFI2")
+	    counter2.SetDigEdgeArmStartTrigEdge(daq.DAQmx_Val_Rising)
+
+	    # Set the counter tasks to use the clock task as the timebase
+	    counter1.SetCITimebaseSrc(laser_channel, clock_channel)
+	    counter2.SetCITimebaseSrc(sync_channel, clock_channel)
+
+	    # Configure counter tasks for continuous sampling
+	    buffer_size = 2 ** 25
+	    counter1.CfgImplicitTiming(daq.DAQmx_Val_ContSamps, buffer_size)
+	    counter2.CfgImplicitTiming(daq.DAQmx_Val_ContSamps, buffer_size)
+
+	    # Start DAQ tasks
+	    try:
+		clock.StartTask()
+		counter1.StartTask()
+		counter2.StartTask()
+	    except Exception as e:
+		print('Exception occurred during task initialization')
+		print(e)
+		clock.StopTask()
+		counter1.StopTask()
+		counter2.StopTask()
+		return None, None
+
+	    # Read laser and sync signals
+	    n_samples = int(acquisition_time_sub / resolution)
+	    laser_data = np.empty((1, 2 * n_samples), dtype=np.uint32)
+	    sync_data = np.empty((1, 2 * n_samples), dtype=np.uint32)
+	    n_read_samples = daq.int32()
+
+	    counter1.ReadCounterU32(2 * n_samples, 100, laser_data[0], 2 * n_samples, byref(n_read_samples), None)
+	    counter2.ReadCounterU32(2 * n_samples, 100, sync_data[0], 2 * n_samples, byref(n_read_samples), None)
+
+	    # Stop and clear DAQ tasks
+	    try:
+		clock.StopTask()
+		clock.ClearTask()
+		counter1.StopTask()
+		counter1.ClearTask()
+		counter2.StopTask()
+		counter2.ClearTask()
+	    except:
+		pass
+
+	    # Extract laser pulses from laser signal
+	    sync_threshold = 0.5
+	    sync_indices = np.argwhere(sync_data > sync_threshold)
+	    array_size = np.min(np.diff(np.transpose(sync_indices))) - 1
+	    pulse_data = np.zeros(array_size)
+	    if flag2:
+		main_data = np.zeros(array_size)
+		flag2 = False
 	
-	task = PyDAQmx.Task()
-	
-	task.CreateAIVoltageChan("Dev1/ai0", "", PyDAQmx.DAQmx_Val_Cfg_Default, -10.0, 10.0, PyDAQmx.DAQmx_Val_Volts, None)
-	task.CfgSampClkTiming("", 100000.0, PyDAQmx.DAQmx_Val_Rising, PyDAQmx.DAQmx_Val_FiniteSamps, 10000)
-	
-	task.Start()
-	
-	data = numpy.zeros((10000,), dtype=numpy.float64)
-	task.ReadAnalogF64(10000, 10.0, PyDAQmx.DAQmx_Val_GroupByScanNumber, data, 10000, PyDAQmx._byref(PyDAQmx.int32()), None)
-	
-	task.Stop()
-	task.Clear()
-	
-	threshold = 0.1
-	count = 0
-	for i in range(10000):
-		if data[i] > threshold:
-			count += 1
-	
-	print("Number of photons counted: %d" % count)
+	    for i in range(np.size(sync_indices) - 2):
+		if i != int(np.size(sync_indices)) - 1:
+		pulse_data += laser_data[0, int(sync_indices[i])+1:int(sync_indices[i])+array_size+1]
+	    main_data += pulse_data
+
+	print("Signal of {} pulses acquired in {:.2f}s.\n".format(np.size(sync_indices), time.time()-start_time))
+
+	# Create dictionary of acquired data
+	data = {}
+	data[chan_name] = list(main_data)
+	data['TimeScale'] = list(resolution * np.arange(np.size(main_data)))
+
+	# Save data to file
+	if save:
+	    os.makedirs(os.path.dirname(filepath), exist_ok=True)
+	    with open(filepath, 'a') as f:
+		print(data, file=f)
+		time.sleep(1)
+
+	return data[chan_name], data['TimeScale']
 	</pre>
 	<p>This script creates a task for analogue input on ai0, configures the sampling clock to run at 100 kHz, starts the task, reads 10000 samples of analogue data, stops the task, and releases the task resources. The script then counts the number of samples where the signal exceeds a specified threshold, and prints the number of photons counted.</p>
 	
