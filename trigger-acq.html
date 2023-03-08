@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Edge Trigger Acquisition with PyDAQ-mx</title>
+</head>
+<body>
+	<h1>Edge Trigger Acquisition with PyDAQ-mx</h1>
+	<p>This tutorial explains how to acquire analogue or digital signals using edge triggers in PyDAQ-mx. Edge triggers can be used to synchronize data acquisition with specific events, such as the rising or falling edge of a signal.</p>
+	
+	<h2>Getting Started</h2>
+	<p>In order to get started with edge trigger acquisition using PyDAQ-mx, you will need:</p>
+	<ul>
+		<li>An NI data acquisition card with analogue or digital input channels</li>
+		<li>A compatible version of Python installed on your computer</li>
+	</ul>
+	
+	<h2>Types of Edge Triggers</h2>
+	<p>PyDAQ-mx supports several types of edge triggers:</p>
+	<ul>
+		<li><strong>Immediate Trigger</strong>: Acquire data immediately upon task start</li>
+		<li><strong>Digital Edge Trigger</strong>: Trigger on the rising or falling edge of a digital signal</li>
+		<li><strong>Analogue Edge Trigger</strong>: Trigger on the rising or falling edge of an analogue signal</li>
+		<li><strong>Software Trigger</strong>: Trigger acquisition programmatically using a software command</li>
+	</ul>
+	
+	<h2>Edge Trigger Acquisition Example</h2>
+	<p>Here's an example script for acquiring an analogue signal using a rising edge trigger:</p>
+	<pre>
+	import PyDAQmx
+	
+	task = PyDAQmx.Task()
+	
+	task.CreateAIVoltageChan("Dev1/ai0", "", PyDAQmx.DAQmx_Val_Diff, -10.0, 10.0, PyDAQmx.DAQmx_Val_Volts, None)
+	task.CfgSampClkTiming("", 1000.0, PyDAQmx.DAQmx_Val_Rising, PyDAQmx.DAQmx_Val_FiniteSamps, 1000)
+	
+	task.Start()
+	
+	data = numpy.zeros((1000,), dtype=numpy.float64)
+	task.ReadAnalogF64(1000, 10.0, PyDAQmx.DAQmx_Val_GroupByScanNumber, data, 1000, PyDAQmx._byref(PyDAQmx.int32()), None)
+	
+	task.Stop()
+	task.Clear()
+	</pre>
+	<p>This script creates a task for analogue input on ai0, configures the sampling clock to run at 1000 Hz, sets the rising edge trigger, starts the task, reads 1000 samples of analogue data, stops the task, and releases the task resources.</p>
+	
+	<h2>Conclusion</h2>
+	<p>Edge trigger acquisition is a powerful tool for synchronizing data acquisition with specific events in analogue or digital signals. PyDAQ-mx provides support for several types of edge triggers, making it easy to set up and control edge trigger acquisition tasks in Python. We hope this tutorial has been helpful in getting you started with edge trigger acquisition in PyDAQ-mx.</p>
+</body>
+</html>
