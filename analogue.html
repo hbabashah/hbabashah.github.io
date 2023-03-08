@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Analogue Acquisition with PyDAQ-mx for NI Cards</title>
+</head>
+<body>
+	<h1>Analogue Acquisition with PyDAQ-mx for NI Cards</h1>
+	<p>This tutorial explains how to perform analogue acquisition using PyDAQ-mx in Python for NI cards.</p>
+	
+	<h2>What is Analogue Acquisition?</h2>
+	<p>Analogue acquisition is the process of capturing and measuring continuous, real-world signals such as temperature, pressure, or voltage. NI cards provide hardware support for analogue acquisition and can be used with PyDAQ-mx to easily perform analogue acquisition tasks in Python.</p>
+	
+	<h2>Getting Started</h2>
+	<p>In order to get started with analogue acquisition using PyDAQ-mx and an NI card, you will need:</p>
+	<ul>
+		<li>An NI data acquisition card with analogue input channels</li>
+		<li>The PyDAQ-mx package installed</li>
+		<li>A compatible version of Python installed on your computer</li>
+	</ul>
+	
+	<h2>Performing Analogue Acquisition with PyDAQ-mx</h2>
+	<p>Performing analogue acquisition with PyDAQ-mx involves creating a task, configuring the channels and timing, starting the task, and reading the acquired data. Here's an example script:</p>
+	<pre>
+	import PyDAQmx
+	
+	task = PyDAQmx.Task()
+	
+	task.CreateAIVoltageChan("Dev1/ai0", "", PyDAQmx.DAQmx_Val_Diff, -10.0, 10.0, PyDAQmx.DAQmx_Val_Volts, None)
+	task.CfgSampClkTiming("", 1000.0, PyDAQmx.DAQmx_Val_Rising, PyDAQmx.DAQmx_Val_FiniteSamps, 1000)
+	
+	task.Start()
+	
+	data = numpy.zeros((1000,), dtype=numpy.float64)
+	task.ReadAnalogF64(1000, 10.0, PyDAQmx.DAQmx_Val_GroupByScanNumber, data, 1000, PyDAQmx._byref(PyDAQmx.int32()), None)
+	
+	task.Stop()
+	task.Clear()
+	</pre>
+	<p>This script creates a task for a single analogue input channel (ai0), configures the sampling clock to run at 1000 Hz, starts the task, reads 1000 samples of analogue data, stops the task, and releases the task resources.</p>
+	
+	<h2>Conclusion</h2>
+	<p>Performing analogue acquisition using PyDAQ-mx in Python for NI cards is a powerful tool for capturing and processing real-world signals. With PyDAQ-mx and Python, you can easily set up and control analogue acquisition tasks. We hope this tutorial has been helpful in getting you started with analogue acquisition using PyDAQ-mx.</p>
+</body>
+</html>
