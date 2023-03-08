@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Pulse Generation with NI Card</title>
+</head>
+<body>
+	<h1>Pulse Generation with NI Card</h1>
+	<p>This tutorial explains how to generate pulses using an NI card in Python.</p>
+	
+	<h2>What is Pulse Generation?</h2>
+	<p>Pulse generation is the process of generating square wave signals with a fixed frequency and duty cycle. NI cards provide hardware support for pulse generation, which can be used with Python to easily generate pulses for various applications.</p>
+	
+	<h2>Getting Started</h2>
+	<p>In order to get started with pulse generation using an NI card in Python, you will need:</p>
+	<ul>
+		<li>An NI data acquisition card with digital output channels</li>
+		<li>A compatible version of Python installed on your computer</li>
+	</ul>
+	
+	<h2>Generating Pulses with NI Card</h2>
+	<p>Generating pulses using an NI card involves creating a task, configuring the channels and timing, generating the pulses, and releasing the task resources. Here's an example script:</p>
+	<pre>
+	import PyDAQmx
+	
+	task = PyDAQmx.Task()
+	
+	task.CreateDOChan("Dev1/port0/line0", "", PyDAQmx.DAQmx_Val_ChanForAllLines)
+	task.CfgSampClkTiming("", 100.0, PyDAQmx.DAQmx_Val_Rising, PyDAQmx.DAQmx_Val_FiniteSamps, 10)
+	
+	data = [1, 0, 1, 0, 1, 0, 1, 0, 1, 0]
+	task.WriteDigitalLines(10, True, 10.0, PyDAQmx.DAQmx_Val_GroupByChannel, data, None, None)
+	
+	task.Stop()
+	task.Clear()
+	</pre>
+	<p>This script creates a task for digital output on port 0, line 0, configures the sampling clock to run at 100 Hz, generates 10 pulses with a 50% duty cycle, stops the task, and releases the task resources.</p>
+	
+	<h2>Conclusion</h2>
+	<p>Pulse generation with an NI card is a powerful tool for generating square wave signals with fixed frequency and duty cycle. With Python, you can easily set up and control pulse generation tasks. We hope this tutorial has been helpful in getting you started with pulse generation using an NI card in Python.</p>
+</body>
+</html>
