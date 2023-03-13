@@ -16,26 +16,51 @@
     
     <pre>
       <code>
-        # Import necessary libraries
-        import numpy as np
-        from scipy.optimize import curve_fit
+      import numpy as np
 
-        # Define the resonance curve function
-        def resonance_curve(x, a, b, c):
-            return a * np.exp(-(x - b)**2 / (2 * c**2))
 
-        # Generate test data
-        x_data = np.linspace(-5, 5, 101)
-        y_data = resonance_curve(x_data, 1, 0, 1) + np.random.normal(0, 0.1, len(x_data))
+      resonances = np.array([2755, 2785, 2820, 2850, 2911, 2938, 2971, 2994])
 
-        # Fit the resonance curve to the data
-        popt, pcov = curve_fit(resonance_curve, x_data, y_data)
 
-        # Calculate the magnetic field direction
-        direction = np.arctan2(popt[1], popt[0])
+      def calculate_hamiltonian(alpha, B0):
+          D = 2870  # MHz
+          gamma = 2.8  # MHz/G
+          alpha_rad = alpha * np.pi / 180
+          sx = np.array([[0, 1, 0], [1, 0, 1], [0, 1, 0]]) / np.sqrt(2)
+          sy = np.array([[0, -1j, 0], [1j, 0, -1j], [0, 1j, 0]]) / np.sqrt(2)
+          sz = np.array([[1, 0, 0], [0, 0, 0], [0, 0, -1]])
+          H = D * np.dot(sz, sz) + gamma * B0 * (np.sin(alpha_rad) * sx + np.cos(alpha_rad) * sz)
+          eigvals, eigvecs = np.linalg.eig(H)
+          positive_eigenvals = eigvals[eigvals > 0]
+          if len(positive_eigenvals) != 2:
+              raise ValueError("Expected 2 positive eigenvalues, but found {0}".format(len(positive_eigenvals)))
+          return positive_eigenvals
 
-        # Print the magnetic field direction
-        print(f"Magnetic field direction: {direction} radians")
+
+      def find_4_alphas(resonances, B0, error_tolerance=5):
+          alphas = []
+          for i in range(4):
+              expected_eigenvals = [resonances[i], resonances[7-i]]
+              def find_alpha(expected_eigenvals):
+                  for alpha_deg in np.linspace(180, 90, 180):
+                      try:
+                          eigenvals = calculate_hamiltonian(alpha_deg, B0)
+                      except ValueError:
+                          continue
+                      if np.allclose(expected_eigenvals, eigenvals, rtol=0, atol=error_tolerance):
+                          return alpha_deg
+              alphas.append(find_alpha(expected_eigenvals))
+          return alphas, None in alphas
+
+
+      def find_B0():
+          found_B = None
+          for B0 in np.linspace(75, 80, 500):
+              alphas, is_invalid = find_4_alphas(resonances, B0)
+              if not is_invalid:
+                  found_B = B0
+                  break
+          return found_B, al
       </code>
     </pre>
     
