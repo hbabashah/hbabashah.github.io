@@ -16,51 +16,78 @@
     
     <pre>
       <code>
-      import numpy as np
+        import numpy as np
 
 
-      resonances = np.array([2755, 2785, 2820, 2850, 2911, 2938, 2971, 2994])
+        # Resonances for the NV center in diamond
+        resonances = np.array([2755, 2785, 2820, 2850, 2911, 2938, 2971, 2994])
 
 
-      def calculate_hamiltonian(alpha, B0):
-          D = 2870  # MHz
-          gamma = 2.8  # MHz/G
-          alpha_rad = alpha * np.pi / 180
-          sx = np.array([[0, 1, 0], [1, 0, 1], [0, 1, 0]]) / np.sqrt(2)
-          sy = np.array([[0, -1j, 0], [1j, 0, -1j], [0, 1j, 0]]) / np.sqrt(2)
-          sz = np.array([[1, 0, 0], [0, 0, 0], [0, 0, -1]])
-          H = D * np.dot(sz, sz) + gamma * B0 * (np.sin(alpha_rad) * sx + np.cos(alpha_rad) * sz)
-          eigvals, eigvecs = np.linalg.eig(H)
-          positive_eigenvals = eigvals[eigvals > 0]
-          if len(positive_eigenvals) != 2:
-              raise ValueError("Expected 2 positive eigenvalues, but found {0}".format(len(positive_eigenvals)))
-          return positive_eigenvals
+        # Calculates the Hamiltonian matrix for a given angle and magnetic field
+        def calculate_hamiltonian(alpha, B0):
+            # Spin parameters for NV center in diamond
+            D = 2870  # MHz
+            gamma = 2.8  # MHz/G
+
+            # Define spin matrices
+            alpha_rad = alpha * np.pi / 180
+            sx = np.array([[0, 1, 0], [1, 0, 1], [0, 1, 0]]) / np.sqrt(2)
+            sy = np.array([[0, -1j, 0], [1j, 0, -1j], [0, 1j, 0]]) / np.sqrt(2)
+            sz = np.array([[1, 0, 0], [0, 0, 0], [0, 0, -1]])
+
+            # Calculate Hamiltonian
+            H = D * np.dot(sz, sz) + gamma * B0 * (np.sin(alpha_rad) * sx + np.cos(alpha_rad) * sz)
+
+            # Compute eigenvalues of the Hamiltonian
+            eigvals, eigvecs = np.linalg.eig(H)
+
+            # Select only positive eigenvalues
+            positive_eigenvals = eigvals[eigvals > 0]
+            if len(positive_eigenvals) != 2:
+                # Ensure that only two positive eigenvalues are found
+                raise ValueError("Expected 2 positive eigenvalues, but found {0}".format(len(positive_eigenvals)))
+
+            return positive_eigenvals
 
 
-      def find_4_alphas(resonances, B0, error_tolerance=5):
-          alphas = []
-          for i in range(4):
-              expected_eigenvals = [resonances[i], resonances[7-i]]
-              def find_alpha(expected_eigenvals):
-                  for alpha_deg in np.linspace(180, 90, 180):
-                      try:
-                          eigenvals = calculate_hamiltonian(alpha_deg, B0)
-                      except ValueError:
-                          continue
-                      if np.allclose(expected_eigenvals, eigenvals, rtol=0, atol=error_tolerance):
-                          return alpha_deg
-              alphas.append(find_alpha(expected_eigenvals))
-          return alphas, None in alphas
+        # Finds the four angles alpha that correspond to the given resonances and magnetic field B0
+        def find_4_alphas(resonances, B0, error_tolerance=5):
+            alphas = []
+            for i in range(4):
+                # Define the two expected eigenvalues for this angle
+                expected_eigenvals = [resonances[i], resonances[7-i]]
+
+                # Find the angle that produces the expected eigenvalues
+                def find_alpha(expected_eigenvals):
+                    for alpha_deg in np.linspace(180, 90, 180):
+                        try:
+                            eigenvals = calculate_hamiltonian(alpha_deg, B0)
+                        except ValueError:
+                            # Ignore angles that produce complex eigenvalues
+                            continue
+                        if np.allclose(expected_eigenvals, eigenvals, rtol=0, atol=error_tolerance):
+                            # Check if the found eigenvalues are within the tolerance of the expected eigenvalues
+                            return alpha_deg
+
+                # Add the found angle to the list
+                alphas.append(find_alpha(expected_eigenvals))
+
+            # Check if any angles were not found
+            return alphas, None in alphas
 
 
-      def find_B0():
-          found_B = None
-          for B0 in np.linspace(75, 80, 500):
-              alphas, is_invalid = find_4_alphas(resonances, B0)
-              if not is_invalid:
-                  found_B = B0
-                  break
-          return found_B, al
+        # Finds the magnetic field B0 that produces the four required angles
+        def find_B0():
+            found_B = None
+            for B0 in np.linspace(75, 80, 500):
+                alphas, is_invalid = find_4_alphas(resonances, B0)
+                if not is_invalid:
+                    # If all angles were found, return the magnetic field
+                    found_B = B0
+                    break
+
+            # Return the magnetic field and the four angles
+            return found_B, alphas
       </code>
     </pre>
     
