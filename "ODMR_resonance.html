@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Determining Magnetic Field Direction with ODMR Resonance</title>
+  </head>
+  <body>
+    <h1>Determining Magnetic Field Direction with ODMR Resonance</h1>
+    
+    <h2>Introduction</h2>
+    
+    <p>When a magnetic field is applied to a diamond NV (nitrogen-vacancy) center of a spin 1 system, the energy levels of the system are split into three sub-levels due to the Zeeman effect. This splitting can be observed through optically detected magnetic resonance (ODMR), which measures the changes in fluorescence of the NV center as a function of an applied magnetic field.</p>
+    
+    <h2>Code</h2>
+    
+    <p>Here's a code snippet that shows how to determine the direction of a magnetic field using ODMR resonance in a diamond NV center:</p>
+    
+    <pre>
+      <code>
+        # Import necessary libraries
+        import numpy as np
+        from scipy.optimize import curve_fit
+
+        # Define the resonance curve function
+        def resonance_curve(x, a, b, c):
+            return a * np.exp(-(x - b)**2 / (2 * c**2))
+
+        # Generate test data
+        x_data = np.linspace(-5, 5, 101)
+        y_data = resonance_curve(x_data, 1, 0, 1) + np.random.normal(0, 0.1, len(x_data))
+
+        # Fit the resonance curve to the data
+        popt, pcov = curve_fit(resonance_curve, x_data, y_data)
+
+        # Calculate the magnetic field direction
+        direction = np.arctan2(popt[1], popt[0])
+
+        # Print the magnetic field direction
+        print(f"Magnetic field direction: {direction} radians")
+      </code>
+    </pre>
+    
+    <p>In this code, we first import the necessary libraries (NumPy and SciPy's curve_fit function) to perform the analysis. We then define the resonance curve function, which models the expected ODMR response as a function of magnetic field strength. We generate some test data and fit the resonance curve to the data using the curve_fit function.</p>
+    
+    <p>Finally, we calculate the direction of the magnetic field by taking the arctangent of the fitted curve's slope, which corresponds to the magnetic field's strength in the x-direction, divided by its strength in the y-direction. This gives us the angle between the magnetic field and the y-axis, which can be converted to a direction in three-dimensional space if we know the orientation of the diamond NV center relative to the magnetic field.</p>
+    
+    <h2>Conclusion</h2>
+    
+    <p>By measuring ODMR resonance in a diamond NV center of a spin 1 system, we can determine the direction of an applied magnetic field. This can be useful for a wide range of applications, from studying the behavior of magnetic materials to building sensitive magnetic field detectors.</p>
+  </body>
+</html>
