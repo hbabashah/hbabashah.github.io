@@ -91,8 +91,15 @@
       </code>
     </pre>
     
-    <p>In this code, we first import the necessary libraries (NumPy and SciPy's curve_fit function) to perform the analysis. We then define the resonance curve function, which models the expected ODMR response as a function of magnetic field strength. We generate some test data and fit the resonance curve to the data using the curve_fit function.</p>
-    
+    <p>The code is a Python implementation of an algorithm to find the magnetic field B0 and the angles alpha that produce the four required eigenvalues of a Hamiltonian matrix for a diamond NV center. </p>
+    <p>The code is divided into three main functions:</p>
+    <ol>
+      <li><code>calculate_hamiltonian</code>: This function takes as input the angle alpha (in degrees) and the magnetic field B0 (in Gauss) and returns the two positive eigenvalues of the corresponding Hamiltonian matrix. The function first defines the spin matrices for the NV center and then calculates the Hamiltonian using the parameters for the spin system. The function then computes the eigenvalues of the Hamiltonian and returns only the positive eigenvalues.</li>
+      <li><code>find_4_alphas</code>: This function takes as input the resonances (a 1D array of 8 frequencies in MHz), the magnetic field B0, and an error tolerance value (default 5 MHz). The function first loops over the four required angles and, for each angle, defines the two expected eigenvalues based on the resonances. The function then calls the <code>calculate_hamiltonian</code> function to find the angle that produces the expected eigenvalues, using a brute force method of checking all angles between 90 and 180 degrees. The function returns a list of the four angles found, and a boolean indicating whether any angles were not found within the error tolerance.</li>
+      <li><code>find_B0</code>: This function takes no input arguments and calls the <code>find_4_alphas</code> function with a range of magnetic field values between 75 and 80 Gauss. The function stops searching when it finds a magnetic field that produces all four required angles within the error tolerance. The function returns the magnetic field and the list of four angles.</li>
+    </ol>
+    <p>Overall, the code is well-structured and easy to read. It also includes comments to help explain the purpose and functionality of each function and variable.</p>
+
     <p>Finally, we calculate the direction of the magnetic field by taking the arctangent of the fitted curve's slope, which corresponds to the magnetic field's strength in the x-direction, divided by its strength in the y-direction. This gives us the angle between the magnetic field and the y-axis, which can be converted to a direction in three-dimensional space if we know the orientation of the diamond NV center relative to the magnetic field.</p>
     
     <h2>Conclusion</h2>
