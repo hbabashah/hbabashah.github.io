@@ -15,6 +15,10 @@
 		Associated to confocal microscope hardware, Qudi can locate and track ODMR emitters, compensating for sample drift. This feature is particularly interesting when dealing with nanoparticles in a liquid suspension such as in biomedical applications.Qudi efficiently controls the instruments required for acquiring CW ODMR spectra and determining spin resonance frequencies. Real-time fitting of analytical curves on ODMR data allows for adjustment of acquisition parameters and quick sharing of results with collaborators.
 		In addition to the CW ODMR signal, Qudi is designed for the study of spin dynamics with pulse sequences such as for measuring longitudinal spin relaxation curves (T_1), Rabi oscilations, Ramsey (T2*) or Hahn Echo (T2) sequences. It can control the pulse generator for triggering laser and MW pulses in a synchronous manner with the collection of the photoluminescence. It also enables the design of complex pulse sequences, 
 		including dynamical decoupling sequences. Predefined methods like XY8 pulses are available via the graphical interface, and new pulse sequences can be easily added to the program.<p>
+			<p> The initial version of Qudi was focused for experiments on single quantum emitters, thus requiring digital single photon counting modules as well as time tagging electronics in the pulsed measurements. In order to broaden its contextual applicability, %and especially to NV ensembles, 
+				we added several features. </p>
+				<p> Summary of Qudi main features in the original release <a href="https://github.com/Ulm-IQO/qudi">[1]</a> and in our upgraded version <a href="https://github.com/QexSoftware/qudi">[2]</a>. *Under development.</p>
+
 			<table style="width:100%;">
 				<tr>
 				  <th style="width:20%;"><strong>Module</strong></th>
@@ -42,7 +46,6 @@
 				  <td>Digital acquisition with time tagging device<br/>New pulse sequences</td>
 				</tr>
 			  </table>
-			  <p><strong>Note:</strong> Summary of Qudi main features in the original release <a href="Qudigithub">[1]</a> and in our upgraded version <a href="Ourgithub">[2]</a>. *Under development.</p>
 			<ul>
 				<li><a href="https://github.com/QexSoftware/qudi">Qudi Added Features</a></li>
 
