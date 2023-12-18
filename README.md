@@ -18,3 +18,18 @@ The following tutorial is available for Telegram integration:
 
 How to send plots to your phone using Telegram after a measurement is complete
 Thank you for visiting the Physics Lab Tutorial! We hope that you find these tutorials useful. If you have any questions or suggestions, please feel free to contact us.
+
+# Citation
+For citation use the following:
+**Citation Format:**
+
+```yaml
+cff-version: 1.1.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: Johnson
+    given-names: Joe
+    orcid: https://orcid.org/0000-0000-0000-0000
+title: hbabashah/hbabashah.github.io: Physics Quantum Lab
+version: Quantum_NV_Lab
+date-released: 2023-12-18
