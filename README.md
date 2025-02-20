@@ -12,8 +12,8 @@
 *Sep. 2023 - Present*  
 
 ## Education
-- **PhD in Electrical Engineering**, EPFL, Switzerland (2018-2023)
-- **M.Sc. in Electrical Engineering**, Sharif University of Technology, Iran (2015-2018)
+- **PhD **, EPFL, Switzerland (2018-2023)
+- **M.Sc. **, Sharif University of Technology (2015-2018)
 
 ## Technical Skills
 - **Languages:** Python, C/C++, MATLAB  
