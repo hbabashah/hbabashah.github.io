@@ -1,90 +1,160 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<title>Physics Lab Tutorial</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hossein Babashah - Academic CV</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --text-color: #333;
+            --light-gray: #ecf0f1;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+        }
+
+        body {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            color: var(--text-color);
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 3px solid var(--secondary-color);
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin: 0.5rem 0;
+        }
+
+        h2 {
+            color: var(--secondary-color);
+            border-bottom: 2px solid var(--light-gray);
+            padding-bottom: 0.5rem;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .experience-item {
+            display: flex;
+            gap: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .date-range {
+            min-width: 200px;
+            font-weight: 500;
+            color: var(--primary-color);
+        }
+
+        .technical-skills {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .publication {
+            margin: 1rem 0;
+            padding: 1rem;
+            background-color: var(--light-gray);
+            border-radius: 4px;
+        }
+
+        a {
+            color: var(--secondary-color);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .experience-item {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
-	<h1>Welcome to the Physics Lab Tutorial!</h1>
-<p>Welcome to our website! We offer step-by-step tutorials on using hardware and software in the lab with Python. Our tutorials cover a range of topics, including how to use National Instruments (NI) cards with the PyDAQ-mx package, how to plot and send data using the Telegram package, and useful programming skills.
-</p>
+    <header>
+        <h1>Hossein Babashah</h1>
+        <div class="contact-info">
+            <div>📧 <a href="mailto:hbabashah@MagicLeap.com">hbabashah@MagicLeap.com</a></div>
+            <div>📱 +41 78 348 73 75</div>
+            <div>🌍 <a href="https://LinkedIn.com/in/hbabashah">LinkedIn.com/in/hbabashah</a></div>
+            <div>🎓 PhD in Electrical Engineering</div>
+        </div>
+    </header>
 
-<p>If you want more information about our website, feel free to visit <a href="https://github.com/hbabashah/hbabashah.github.io">www.github.io</a>. Additionally, you can check out our contributions to Qudi by following this link: <a href="https://github.com/hbabashah">main git</a>.</p>	
-	<h2>QUDI</h2>
-	<p>Qudi [1], initially released in 2017, integrates modules for performing ODMR experiments, instrument control, and real-time data acquisition and processing. It enables fast imaging by scanning the beam position while collecting luminescence. Qudi can locate ODMR emitters and track them during acquisition, compensating for sample drift. It is particularly useful for studying nanoparticles in liquid suspensions. 
-		It provides useful tools for interfacing a scanning confocal microscope by controlling piezo-based nanopositioning stages or scanning mirrors and collecting the optical emission signal.Possibilities include in-plane scanning (xy), z-stack acquisitions (to obtain 3D images), out of plane cross-sections (xz) or (yz) as well as any other direction cuts depending on the wiring and instrument. 
-		Associated to confocal microscope hardware, Qudi can locate and track ODMR emitters, compensating for sample drift. This feature is particularly interesting when dealing with nanoparticles in a liquid suspension such as in biomedical applications.Qudi efficiently controls the instruments required for acquiring CW ODMR spectra and determining spin resonance frequencies. Real-time fitting of analytical curves on ODMR data allows for adjustment of acquisition parameters and quick sharing of results with collaborators.
-		In addition to the CW ODMR signal, Qudi is designed for the study of spin dynamics with pulse sequences such as for measuring longitudinal spin relaxation curves (T_1), Rabi oscilations, Ramsey (T2*) or Hahn Echo (T2) sequences. It can control the pulse generator for triggering laser and MW pulses in a synchronous manner with the collection of the photoluminescence. It also enables the design of complex pulse sequences, 
-		including dynamical decoupling sequences. Predefined methods like XY8 pulses are available via the graphical interface, and new pulse sequences can be easily added to the program.<p>
-			<p> The initial version of Qudi was focused for experiments on single quantum emitters, thus requiring digital single photon counting modules as well as time tagging electronics in the pulsed measurements. In order to broaden its contextual applicability, %and especially to NV ensembles, 
-				we added several features. </p>
-				<p> Summary of Qudi main features in the original release <a href="https://github.com/Ulm-IQO/qudi">[1]</a> and in our upgraded version <a href="https://github.com/QexSoftware/qudi">[2]</a>. *Under development.</p>
+    <section>
+        <h2>Career Summary</h2>
+        <p>Machine Learning Engineer and Data Scientist with 8+ years of experience developing production-grade AI systems. Specialized in computer vision, sensor fusion, and distributed systems for augmented reality applications. Proven track record of leading cross-functional teams in implementing GDPR-compliant data pipelines and optimizing real-time algorithms.</p>
+    </section>
 
-			<table style="width:100%;">
-				<tr>
-				  <th style="width:20%;"><strong>Module</strong></th>
-				  <th style="width:35%;"><strong>Original features</strong></th>
-				  <th style="width:45%;"><strong>Added features</strong></th>
-				</tr>
-				<tr>
-				  <td style="text-align:center;"><strong>Counting</strong></td>
-				  <td>Analog acquisition<br/>Digital acquisition</td>
-				  <td>Acquisition with oscilloscope<br/>Faster analog and digital DAQ acquisition</td>
-				</tr>
-				<tr>
-				  <td style="text-align:center;"><strong>Confocal</strong></td>
-				  <td>Analog acquisition<br/>Digital acquisition</td>
-				  <td>Acquisition with oscilloscope<br/>Control with <i>Pulse Streamer</i></td>
-				</tr>
-				<tr>
-				  <td style="text-align:center;"><strong>ODMR</strong></td>
-				  <td>Analog acquisition<br/>Digital acquisition</td>
-				  <td>Arbitrary/random MW sweep<br/>Acquisition with oscilloscope<br/>Acquisition with Spectrometer<br/>Lock-in detection*</td>
-				</tr>
-				<tr>
-				  <td style="text-align:center;"><strong>Pulsed</strong></td>
-				  <td>Analog acquisition with DAQ<br/>Analog acquisition with oscilloscope<br/>Digital acquisition with DAQ<br/>Pulse extraction improved</td>
-				  <td>Digital acquisition with time tagging device<br/>New pulse sequences</td>
-				</tr>
-			  </table>
-			<ul>
-				<li><a href="https://github.com/QexSoftware/qudi">Qudi Added Features</a></li>
+    <section>
+        <h2>Professional Experience</h2>
+        
+        <div class="experience-item">
+            <div class="date-range">Sep. 2023 - Current</div>
+            <div>
+                <h3>Data Engineer | Magic Leap, Zürich</h3>
+                <p>Led development of Android AR data collection system with IMU/Optitrack synchronization (20% accuracy improvement). Architected GDPR-compliant anonymization pipeline using EgoBlur technology. Implemented cloud-based localization workflow (LAMAR) with Apache Airflow on GCP, reducing processing time by 30%.</p>
+            </div>
+        </div>
 
-			</ul>
-	<h2>NI Cards using PyDAQ-mx</h2>
-	<p>NI cards provide hardware support for data acquisition tasks such as capturing and measuring analogue signals, and detecting digital events. The PyDAQ-mx package provides a Python interface for controlling NI cards, making it easy to set up and perform data acquisition tasks.</p>
-	<ul>
-		<li><a href="analogue-acq.html">Analogue Acquisition with PyDAQ-mx for NI Cards</a></li>
-		<li><a href="digital-acq.html">Digital Acquisition with PyDAQ-mx for NI Cards</a></li>
-		<li><a href="trigger-acq.html">Trigger Acquisition with PyDAQ-mx for NI Cards</a></li>
-		<li><a href="photon-counting.html">Photon Counting with PyDAQ-mx for NI Cards</a></li>
-		<li><a href="pulse-generation.html">Pulse generation with PyDAQ-mx for NI Cards</a></li>
+        <!-- Other experience items following same structure -->
+    </section>
 
-	</ul>
-	
-	</ul>
-	
-	<h2>Determining Magnetic Field Direction with ODMR Resonance</h2>
-	<p> Determining Magnetic Field Direction with ODMR (Optically Detected Magnetic Resonance) Resonance involves using the properties of a diamond NV (nitrogen-vacancy) center of a spin 1 system to determine the direction of an applied magnetic field.
+    <section>
+        <h2>Technical Proficiencies</h2>
+        <div class="technical-skills">
+            <div>
+                <h3>Languages & Frameworks</h3>
+                <p>Python, C/C++, CUDA, PyTorch, TensorFlow, OpenCV, ROS</p>
+            </div>
+            <div>
+                <h3>Cloud & DevOps</h3>
+                <p>AWS/GCP/Azure, Docker, Kubernetes, Terraform, CI/CD</p>
+            </div>
+            <div>
+                <h3>Specialized Domains</h3>
+                <p>Sensor Fusion, SLAM, 3D Reconstruction, Reinforcement Learning</p>
+            </div>
+        </div>
+    </section>
 
-When a magnetic field is applied to a diamond NV center, the energy levels of the system split into three sub-levels due to the Zeeman effect. This splitting can be observed through ODMR, which measures the changes in fluorescence of the NV center as a function of an applied magnetic field.</p>
-	<ul>
-		<li><a href="ODMR_resonance.html">Determining Magnetic Field Direction with ODMR Resonance</a></li>
-	</ul>
-	
-	
-	
-	<h2>Telegram Integration</h2>
-	<p>Telegram is a messaging app that can be used to send messages, photos, videos, and files to other users. The Python Telegram Bot API provides a way to interact with Telegram bots using Python. This can be used to send plots and other data to your phone or other devices after a measurement is complete.</p>
-	<ul>
-		<li><a href="telegram.html">How to send plots to your phone using Telegram after a measurement is complete</a></li>
-	</ul>
-	
-	<h2>Programming Skills</h2>
-	<p>Programming skills are essential for working in the lab. Here are some resources to improve your programming skills:</p>
-	<ul>
-		<li><a href="https://www.codecademy.com/">Codecademy</a> - Learn to code interactively, for free.</li>
-		<li><a href="https://www.w3schools.com/">W3Schools</a> - Web development tutorials.</li>
-		<li><a href="https://stackoverflow.com/">Stack Overflow</a> - A community-driven Q&A site for programming questions.</li>
-	</ul>
+    <section>
+        <h2>Academic Contributions</h2>
+        <div class="publication">
+            <h3>Selected Publication</h3>
+            <p>"Open Source Platform for optically detected magnetic resonance" <em>SciPost Physics Core</em> 2023 [<a href="#publications">Link</a>]</p>
+        </div>
+        
+        <h3>Patents</h3>
+        <ul>
+            <li>US 16/385,548: Parallel DNA Computation</li>
+            <li>EP 4 194 874 A1: High-Efficiency Magnetometer</li>
+        </ul>
+    </section>
+
+    <!-- Additional sections for Education, Certifications, Projects -->
+    
+    <footer>
+        <p>References and full publication list available at <a href="https://scholar.google.com/citations?user=PROFILE_ID">Google Scholar</a></p>
+    </footer>
 </body>
 </html>
